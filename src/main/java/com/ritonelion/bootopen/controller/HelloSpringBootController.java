@@ -4,9 +4,7 @@ import com.ritonelion.bootopen.model.DemoModel;
 import com.ritonelion.bootopen.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +36,18 @@ public class HelloSpringBootController
     public List<DemoModel> allDemo()
     {
         return demoService.selectAll();
+    }
+
+    @GetMapping("/post")
+    public String post()
+    {
+        return "post";
+    }
+
+    @PostMapping("/post")
+    public String show()
+    {
+        return "result";
     }
 
 }
