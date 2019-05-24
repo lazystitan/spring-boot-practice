@@ -7,5 +7,10 @@
     <body>
         <p>hello</p>
         <br/>
+        <table>
+            <tr th:each="list:${list}">
+                <td th:text="${list}"></td>
+            </tr>
+        </table>
     </body>
 </html>
