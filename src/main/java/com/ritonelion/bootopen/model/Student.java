@@ -1,6 +1,6 @@
 package com.ritonelion.bootopen.model;
 
-public class Teacher
+public class Student
 {
     private String id;
     private String name;

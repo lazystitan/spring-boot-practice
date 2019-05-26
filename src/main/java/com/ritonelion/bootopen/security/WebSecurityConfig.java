@@ -14,7 +14,8 @@ import javax.servlet.http.HttpSession;
 @Configuration
 public class WebSecurityConfig implements WebMvcConfigurer
 {
-    public final static String SESSION_KEY = "user";
+    public final static String SESSION_ID = "id";
+    public final static String SESSION_role = "role";
 
     @Bean
     public SecurityInterceptor getSecurityInterceptor() {
@@ -37,7 +38,7 @@ public class WebSecurityConfig implements WebMvcConfigurer
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception
         {
             HttpSession session = request.getSession();
-            if (session.getAttribute(SESSION_KEY) != null)
+            if (session.getAttribute(SESSION_ID) != null && session.getAttribute(SESSION_role) != null)
                 return true;
 
             String url = "/login";
