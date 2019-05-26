@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RegisterPost</title>
+</head>
+<body>
+    <p th:if="${success}">注册成功</p>
+    <p th:if="${not success}">注册失败</p>
+
+    <a href="/login">跳转至登录页面</a>
+</body>
+</html>

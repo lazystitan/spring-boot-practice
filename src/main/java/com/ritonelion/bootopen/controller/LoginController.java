@@ -1,27 +1,31 @@
 package com.ritonelion.bootopen.controller;
 
 
+import com.ritonelion.bootopen.dao.DepartmentDao;
 import com.ritonelion.bootopen.dao.StudentDao;
 import com.ritonelion.bootopen.dao.TeacherDao;
+import com.ritonelion.bootopen.model.Department;
 import com.ritonelion.bootopen.model.Student;
 import com.ritonelion.bootopen.model.Teacher;
 import com.ritonelion.bootopen.security.WebSecurityConfig;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class LoginController
 {
     @GetMapping("/logintest")
-    public ModelAndView logintest(@SessionAttribute(WebSecurityConfig.SESSION_ID) String id, @SessionAttribute(WebSecurityConfig.SESSION_role) String role)
+    public ModelAndView logintest(@SessionAttribute(WebSecurityConfig.SESSION_ID) String id, @SessionAttribute(WebSecurityConfig.SESSION_ROLE) String role)
     {
-        System.out.println("test");
         ModelAndView modelAndView = new ModelAndView("logintest");
         modelAndView.addObject("id",id);
         modelAndView.addObject("role",role);
@@ -31,7 +35,7 @@ public class LoginController
     @GetMapping("/login")
     public String login()
     {
-        return "login";
+        return "auth/login";
     }
 
     @Autowired
@@ -92,14 +96,89 @@ public class LoginController
     private void setSessionAttribute(HttpSession session, String id, String role)
     {
         session.setAttribute(WebSecurityConfig.SESSION_ID, id);
-        session.setAttribute(WebSecurityConfig.SESSION_role,role);
+        session.setAttribute(WebSecurityConfig.SESSION_ROLE,role);
     }
+
+    @Autowired
+    DepartmentDao departmentDao;
+
+    @GetMapping
+    public ModelAndView register()
+    {
+        ModelAndView modelAndView = new ModelAndView("auth/register");
+
+        List<Department> departments = new ArrayList<>();
+
+        departments = departmentDao.getDepartments();
+
+        modelAndView.addObject("departments",departments);
+
+        return modelAndView;
+    }
+
+    @PostMapping("/registertest")
+    @ResponseBody
+    Map<String,Object> registerTest(
+            @RequestParam("id") String id,
+            @RequestParam("name") String name,
+            @RequestParam("sex") String sex,
+            @RequestParam("birthday") String birthday,
+            @RequestParam("password") String password,
+            @RequestParam("department") String department
+    )
+    {
+        Map<String,Object> map = new HashMap<>();
+
+        map.put("id", id);
+        map.put("name", name);
+        map.put("sex", sex);
+        map.put("birthday", birthday);
+        map.put("password",password);
+        map.put("department",department);
+
+        return map;
+    }
+
+    @PostMapping("/registerpost")
+    public ModelAndView registerPost(
+            @RequestParam("role") String role,
+            @RequestParam("id") String id,
+            @RequestParam("name") String name,
+            @RequestParam("sex") String sex,
+            @RequestParam("birthday") String birthday,
+            @RequestParam("password") String password,
+            @RequestParam("department") String department
+    )
+    {
+        ModelAndView modelAndView = new ModelAndView("auth/registerpost");
+
+        try
+        {
+            if (role.equals("teacher"))
+                teacherDao.insertTeacher(id, name, sex, birthday, password, department);
+            else if (role.equals("student"))
+                studentDao.insertStudent(id, name, sex, birthday, password, department);
+            else
+                throw new Exception("no such role");
+        }
+        catch (Exception e)
+        {
+//            e.printStackTrace();
+            modelAndView.addObject("success",false);
+            return modelAndView;
+        }
+        modelAndView.addObject("success",true);
+
+        return modelAndView;
+    }
+    
 
     @GetMapping("/logout")
     public String logout(HttpSession session)
     {
         session.removeAttribute(WebSecurityConfig.SESSION_ID);
-        return "redirect:/login";
+        session.removeAttribute(WebSecurityConfig.SESSION_ROLE);
+        return "redirect:auth/login";
     }
 
     public static void main(String[] args)

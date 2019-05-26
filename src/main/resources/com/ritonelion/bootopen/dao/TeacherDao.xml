@@ -6,4 +6,9 @@
     <select id="getTeacherById" resultType="com.ritonelion.bootopen.model.Teacher">
         select id, name, sex, birthday, password, department_id from teacher where id = #{id}
     </select>
+
+    <insert id="insertTeacher">
+        insert into teacher (id, name, sex, birthday, password, department_id)
+        values (#{id}, #{name}, #{sex}, #{birthday}, #{password}, #{department_id})
+    </insert>
 </mapper>

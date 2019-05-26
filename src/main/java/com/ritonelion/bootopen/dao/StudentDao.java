@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface StudentDao
 {
     Student getStudentById(String id);
+    void insertStudent(String id, String name, String sex, String birthday, String password, String department_id);
 }

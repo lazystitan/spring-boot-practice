@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <form action="/registerpost" method="post">
+
+        <label><input type="radio" name="role" value="student" checked>学生注册</label>
+        <label><input type="radio" name="role" value="teacher">教师注册</label>
+
+        <br>
+
+        <label>学号:<input type="text" name="id"></label>
+
+        <br>
+
+        <label>姓名:<input type="text" name="name"></label>
+
+        <br>
+
+        性别:
+        <label><input type="radio" name="sex" value="男" checked>男</label>
+        <label><input type="radio" name="sex" value="女">女</label>
+
+        <br>
+
+        <label>生日:<input type="date" name="birthday"></label>
+
+        <br>
+
+        <label>密码:<input type="password" name="password"></label>
+
+        <br>
+
+        <label>学院:
+            <select name="department">
+                <option th:each="department:${departments}" th:text="${department}" th:value="${department.id}"></option>
+            </select>
+        </label>
+
+        <br>
+
+        <input type="submit" value="注册">
+    </form>
+</body>
+</html>

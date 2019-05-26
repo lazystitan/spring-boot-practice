@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class WebSecurityConfig implements WebMvcConfigurer
 {
     public final static String SESSION_ID = "id";
-    public final static String SESSION_role = "role";
+    public final static String SESSION_ROLE = "role";
 
     @Bean
     public SecurityInterceptor getSecurityInterceptor() {
@@ -28,6 +28,7 @@ public class WebSecurityConfig implements WebMvcConfigurer
 
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/login**");
+        addInterceptor.excludePathPatterns("/register**");
 
         addInterceptor.addPathPatterns("/**");
     }
@@ -38,7 +39,7 @@ public class WebSecurityConfig implements WebMvcConfigurer
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception
         {
             HttpSession session = request.getSession();
-            if (session.getAttribute(SESSION_ID) != null && session.getAttribute(SESSION_role) != null)
+            if (session.getAttribute(SESSION_ID) != null && session.getAttribute(SESSION_ROLE) != null)
                 return true;
 
             String url = "/login";

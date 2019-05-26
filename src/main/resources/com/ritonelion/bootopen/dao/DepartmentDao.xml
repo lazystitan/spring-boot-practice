@@ -8,6 +8,10 @@
         select id,name from department where id = #{id}
     </select>
 
+    <select id="getDepartments" resultType="com.ritonelion.bootopen.model.Department">
+        select id,name from department
+    </select>
+
     <insert id="insertDepartment">
         insert into department (id, name) values (#{id}, #{name})
     </insert>
