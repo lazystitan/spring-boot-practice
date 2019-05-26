@@ -14,7 +14,7 @@ public class SampleController
 {
 
     @GetMapping("/index")
-    public ModelAndView index(Model model) {
+    public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("index");
 
         List<String> list = new ArrayList<>();

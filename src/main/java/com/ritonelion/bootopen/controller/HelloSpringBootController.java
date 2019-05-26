@@ -1,53 +1,25 @@
 package com.ritonelion.bootopen.controller;
 
-import com.ritonelion.bootopen.model.DemoModel;
-import com.ritonelion.bootopen.service.DemoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HelloSpringBootController
 {
-    private final DemoService demoService;
-
-    @Autowired
-    public HelloSpringBootController(DemoService _demoService)
-    {
-        demoService = _demoService;
-    }
-
     @RequestMapping("/hello")
     public String hello()
     {
         return "hello";
     }
 
-    @RequestMapping("/test")
-    public String test()
+    @PostMapping("/result")
+    public ModelAndView result(@Param("data") String data)
     {
-        return "test";
-    }
+        ModelAndView modelAndView = new ModelAndView("result");
+        modelAndView.addObject("data",data);
 
-    @RequestMapping("/dbtest")
-    @ResponseBody
-    public List<DemoModel> allDemo()
-    {
-        return demoService.selectAll();
+        return modelAndView;
     }
-
-    @GetMapping("/post")
-    public String post()
-    {
-        return "post";
-    }
-
-    @PostMapping("/post")
-    public String show()
-    {
-        return "result";
-    }
-
 }
