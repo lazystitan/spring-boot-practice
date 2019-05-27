@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ritonelion.bootopen.dao.CourseDao">
+
+    <select id="getCourseById" resultType="com.ritonelion.bootopen.model.Course">
+        select id, name, credit, max, departmentId from course where id = #{id}
+    </select>
+
+    <update id="updateCourse">
+        update course
+        set name = #{name}, credit=#{credit}, max=#{max}, departmentId=#{departmentId}
+        where id = #{id}
+    </update>
+
+    <insert id="insertCourse">
+        insert into course (id, name, credit, max, departmentId)
+        VALUES
+        (#{id}, #{name}, #{credit}, #{max}, #{departmentId})
+    </insert>
+
+    <delete id="delCourse">
+        delete from course where id = #{id}
+    </delete>
+
+</mapper>

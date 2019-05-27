@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LoginPost</title>
+</head>
+<body>
+    <div th:if="${success}">登录成功
+    <a href="/index">跳转至主页</a>
+    </div>
+
+    <div th:if="${not success}">登录失败
+        <a href="/login">跳转至登录页面</a>
+    </div>
+</body>
+</html>

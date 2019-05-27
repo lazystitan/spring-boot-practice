@@ -5,9 +5,12 @@
     <title>RegisterPost</title>
 </head>
 <body>
-    <p th:if="${success}">注册成功</p>
-    <p th:if="${not success}">注册失败</p>
-
+    <div th:if="${success}">注册成功
     <a href="/login">跳转至登录页面</a>
+    </div>
+
+    <div th:if="${not success}">注册失败
+        <a href="/login">跳转至注册页面</a>
+    </div>
 </body>
 </html>

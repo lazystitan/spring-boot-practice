@@ -23,10 +23,19 @@ import java.util.Map;
 @Controller
 public class LoginController
 {
+    @Autowired
+    TeacherDao teacherDao;
+
+    @Autowired
+    StudentDao studentDao;
+
+    @Autowired
+    DepartmentDao departmentDao;
+
     @GetMapping("/logintest")
     public ModelAndView logintest(@SessionAttribute(WebSecurityConfig.SESSION_ID) String id, @SessionAttribute(WebSecurityConfig.SESSION_ROLE) String role)
     {
-        ModelAndView modelAndView = new ModelAndView("logintest");
+        ModelAndView modelAndView = new ModelAndView("auth/logintest");
         modelAndView.addObject("id",id);
         modelAndView.addObject("role",role);
         return modelAndView;
@@ -38,15 +47,65 @@ public class LoginController
         return "auth/login";
     }
 
-    @Autowired
-    TeacherDao teacherDao;
-
-    @Autowired
-    StudentDao studentDao;
-
     @PostMapping("/loginpost")
+    public ModelAndView loginPost(
+            @RequestParam("role") String role,
+            @RequestParam("id") String id,
+            @RequestParam("password") String password,
+            HttpSession session
+    )
+    {
+        ModelAndView modelAndView = new ModelAndView("auth/loginpost");
+
+        switch (role)
+        {
+            case "teacher":
+                Teacher teacher = teacherDao.getTeacherById(id);
+
+                if (teacher == null || !teacher.getPassword().equals(password))
+                {
+                    modelAndView.addObject("success", false);
+                    return modelAndView;
+                }
+
+                setSessionAttribute(session,id,role);
+                modelAndView.addObject("success",true);
+                return modelAndView;
+
+            case "student":
+                Student student = studentDao.getStudentById(id);
+
+                if (student == null || !student.getPassword().equals(password))
+                {
+                    modelAndView.addObject("success", false);
+                    return modelAndView;
+                }
+
+                setSessionAttribute(session,id,role);
+                modelAndView.addObject("success",true);
+                return modelAndView;
+
+            case "admin":
+                if (!"admin".equals(password))
+                {
+                    modelAndView.addObject("success", false);
+                    return modelAndView;
+                }
+
+                setSessionAttribute(session,id,role);
+                modelAndView.addObject("success", true);
+
+                return modelAndView;
+
+            default:
+                modelAndView.addObject("success", false);
+                return modelAndView;
+        }
+    }
+
+    @PostMapping("/loginpost_pre")
     public @ResponseBody
-    Map<String,Object> loginPost(@RequestParam("role") String role, @RequestParam("id") String id,@RequestParam("password") String password, HttpSession session)
+    Map<String,Object> loginPostPre(@RequestParam("role") String role, @RequestParam("id") String id,@RequestParam("password") String password, HttpSession session)
     {
         Map<String,Object> map = new HashMap<>();
 
@@ -99,10 +158,7 @@ public class LoginController
         session.setAttribute(WebSecurityConfig.SESSION_ROLE,role);
     }
 
-    @Autowired
-    DepartmentDao departmentDao;
-
-    @GetMapping
+    @GetMapping("/register")
     public ModelAndView register()
     {
         ModelAndView modelAndView = new ModelAndView("auth/register");

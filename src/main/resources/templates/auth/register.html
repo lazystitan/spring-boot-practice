@@ -3,46 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <style>
+        .form
+        {
+            margin:100px auto;
+            width: 300px;
+            text-align: match-parent;
+            height: 280px;
+            background: #cbebf5;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px #b3b3b3;
+        }
+        .button
+        {
+            margin:0 40%;
+        }
+        #input
+        {
+            margin: 10px 50px;
+            line-height: 30px;
+        }
+    </style>
 </head>
 <body>
-    <form action="/registerpost" method="post">
+    <form action="/registerpost" method="post" class="form">
 
-        <label><input type="radio" name="role" value="student" checked>学生注册</label>
-        <label><input type="radio" name="role" value="teacher">教师注册</label>
+        <div id="input">
+            <label><input type="radio" name="role" value="student" checked>学生注册</label>
+            <label><input type="radio" name="role" value="teacher">教师注册</label>
 
-        <br>
+            <br>
 
-        <label>学号:<input type="text" name="id"></label>
 
-        <br>
+            <label>学号:<input type="text" name="id"></label>
 
-        <label>姓名:<input type="text" name="name"></label>
+            <br>
 
-        <br>
+            <label>姓名:<input type="text" name="name"></label>
 
-        性别:
-        <label><input type="radio" name="sex" value="男" checked>男</label>
-        <label><input type="radio" name="sex" value="女">女</label>
+            <br>
 
-        <br>
+            性别:
+            <label><input type="radio" name="sex" value="男" checked>男</label>
+            <label><input type="radio" name="sex" value="女">女</label>
 
-        <label>生日:<input type="date" name="birthday"></label>
+            <br>
 
-        <br>
+            <label>生日:<input type="date" name="birthday"></label>
 
-        <label>密码:<input type="password" name="password"></label>
+            <br>
 
-        <br>
+            <label>密码:<input type="password" name="password"></label>
 
-        <label>学院:
-            <select name="department">
-                <option th:each="department:${departments}" th:text="${department}" th:value="${department.id}"></option>
-            </select>
-        </label>
+            <br>
 
-        <br>
+            <label>学院:
+                <select name="department">
+                    <option th:each="department:${departments}" th:text="${department}"
+                            th:value="${department.id}"></option>
+                </select>
+            </label>
 
-        <input type="submit" value="注册">
+            <br>
+        </div>
+
+        <input type="submit" value="注册" class="button">
     </form>
 </body>
 </html>

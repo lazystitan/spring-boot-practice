@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Course</title>
+    <style>
+        table, th, td
+        {
+            border-style: solid;
+            border-color: #4395b5;
+            border-width: 1.5px;
+        }
+        table
+        {
+            border-collapse: collapse;
+        }
+    </style>
+    <script>
+        function edit() {
+            document.getElementById("name_input").style.display="block";
+            document.getElementById("credit_input").style.display="block";
+            document.getElementById("max_input").style.display="block";
+            document.getElementById("department_input").style.display="block";
+
+            document.getElementById("name_dis").style.display="none";
+            document.getElementById("credit_dis").style.display="none";
+            document.getElementById("max_dis").style.display="none";
+            document.getElementById("department_dis").style.display="none";
+
+            var edit = document.getElementById("edit_button");
+            edit.setAttribute("value","确认");
+            edit.setAttribute("onclick","confirm()");
+
+            var cancel = document.createElement("input");
+            cancel.setAttribute("type","button");
+            cancel.setAttribute("id","cancel_button");
+            cancel.setAttribute("value","取消");
+            cancel.setAttribute("onclick","cancel()");
+            // cancel.setAttribute("onclick","alert('test')");
+            document.getElementById("buttons").appendChild(cancel);
+            // alert("test");
+        }
+
+        function cancel() {
+            // alert("test");
+            var buttons = document.getElementById("buttons");
+            buttons.removeChild(document.getElementById("cancel_button"));
+
+            var edit = document.getElementById("edit_button");
+            edit.setAttribute("value","编辑");
+            edit.setAttribute("onclick","edit()");
+
+            document.getElementById("name_dis").style.display="block";
+            document.getElementById("credit_dis").style.display="block";
+            document.getElementById("max_dis").style.display="block";
+            document.getElementById("department_dis").style.display="block";
+
+            document.getElementById("name_input").style.display="none";
+            document.getElementById("credit_input").style.display="none";
+            document.getElementById("max_input").style.display="none";
+            document.getElementById("department_input").style.display="none";
+        }
+        
+        function confirm() {
+            var form = document.getElementById("edit_form");
+            form.setAttribute("action","/updatecourse");
+            form.submit();
+        }
+        
+        function del() {
+            var form = document.getElementById("edit_form");
+            form.setAttribute("action","/delcourse");
+            form.submit();
+        }
+    </script>
+</head>
+<body>
+    <form action="/editcourse" method="get" id="form">
+        <label>课程号：<input type="text" name="course_id"></label>
+        <input type="submit" value="搜索">
+    </form>
+    <p th:if="${notFound}">没有该课程</p>
+    <form method="get" id="edit_form">
+        <table th:if="${not notFound}" id="table">
+            <tr>
+                <td>课程号</td>
+                <td>课程名</td>
+                <td>学分</td>
+                <td>容量</td>
+                <td>学院</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td id="id">
+                    <span id="id_dis" th:text="${id}"></span>
+                    <input type="text" name="id" th:value="${id}" style="display: none">
+                </td>
+                <td id="name">
+                    <span id="name_dis" th:text="${name}"></span>
+                    <input type="text" id="name_input" name="name_input" style="display: none" th:value="${name}">
+                </td>
+                <td id="credit">
+                    <span id="credit_dis" th:text="${credit}"></span>
+                    <input type="text" id="credit_input" name="credit_input" style="display: none" th:value="${credit}">
+                </td>
+                <td id="max">
+                    <span id="max_dis" th:text="${max}"></span>
+                    <input type="text" id="max_input" name="max_input" style="display: none" th:value="${max}">
+                </td>
+                <td id="department">
+                    <span id="department_dis" th:text="${department}"></span>
+                    <select name="department_input" id="department_input" style="display: none">
+                        <option th:each="department:${departments}" th:text="${department}"
+                                th:value="${department.id}"></option>
+                    </select>
+                </td>
+                <td id="buttons">
+                    <input onclick="edit()" type="button" value="编辑" id="edit_button">
+                    <input onclick="del()" type="button" value="删除">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div>
+        <form action="/addcourse" method="post">
+            <label>课程号：<input type="text" id="id_add" name="id_add"></label>
+            <br>
+            <label>课程名：<input type="text" id="name_add" name="name_add"></label>
+            <br>
+            <label>学分：<input type="text" id="credit_add" name="credit_add"></label>
+            <br>
+            <label>容量：<input type="text" id="max_add" name="max_add"></label>
+            <br>
+            <label>学院：
+                <select name="department_add" id="department_add">
+                    <option th:each="department:${departments}" th:text="${department}"
+                            th:value="${department.id}"></option>
+                </select>
+            </label>
+            <br>
+            <input type="submit" value="添加">
+        </form>
+    </div>
+</body>
+</html>
