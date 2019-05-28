@@ -54,20 +54,7 @@ public class IndexController
 
         modelAndView.addObject("name",name);
 
-        String term = "";
-
-        try
-        {
-            FileReader fileReader = new FileReader("term.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            term = bufferedReader.readLine();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        modelAndView.addObject("term", term);
+        AdminController.addTerm(modelAndView);
 
         return modelAndView;
     }

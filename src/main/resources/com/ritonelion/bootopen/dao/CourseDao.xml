@@ -24,4 +24,8 @@
         delete from course where id = #{id}
     </delete>
 
+    <select id="getCourses" resultType="com.ritonelion.bootopen.model.Course">
+        select id, name, credit, max, departmentId from course
+    </select>
+
 </mapper>

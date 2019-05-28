@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>EditOpen</title>
+    <style>
+        table, th, td
+        {
+            border-style: solid;
+            border-color: #4395b5;
+            border-width: 1.5px;
+        }
+        table
+        {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="parts/header::header_part"></div>
+    <div th:replace="parts/nav::navgation_part"></div>
+    <form action="/addopened" method="get">
+        <label>学期<input type="text" name="term_add"></label>
+        <br>
+        <label>课程号
+            <select name="courseId_add">
+                <option th:each="course:${courses}" th:text="${course.name}" th:value="${course.id}"></option>
+            </select>
+        </label>
+        <br>
+        <label>教师工号
+            <select name="teacherId_add">
+                <option th:each="teacher:${teachers}" th:text="${teacher.name}" th:value="${teacher.id}"></option>
+            </select>
+        </label>
+        <br>
+        <label>上课时间<input type="text" name="time_add"></label>
+        <br>
+        <input type="submit" value="添加">
+    </form>
+
+    <table>
+        <tr>
+            <td>序号</td>
+            <td>学期</td>
+            <td>课程号</td>
+            <td>课程名</td>
+            <td>教师工号</td>
+            <td>教师姓名</td>
+            <td>上课时间</td>
+            <td></td>
+        </tr>
+        <tr th:each="opened:${openeds}">
+            <form th:id="${opened.id}+'_form'" action="/delopened" method="get">
+                <td>
+                    <span th:text="${opened.id}"></span>
+                    <input th:value="${opened.id}" type=text style="display: none" name="id">
+                </td>
+                <td>
+                    <span th:text="${opened.term}"></span>
+                </td>
+                <td>
+                    <span th:text="${opened.courseId}"></span>
+                </td>
+                <td>
+                    <span th:text="${opened.courseName}"></span>
+                </td>
+                <td>
+                    <span th:text="${opened.teacherId}"></span>
+                </td>
+                <td>
+                    <span th:text="${opened.teacherName}"></span>
+                </td>
+                <td>
+                    <span th:text="${opened.time}"></span>
+                </td>
+                <td>
+                    <input type="submit" value="删除">
+                </td>
+            </form>
+        </tr>
+    </table>
+
+</body>
+</html>

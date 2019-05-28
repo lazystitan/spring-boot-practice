@@ -29,6 +29,8 @@ public class WebSecurityConfig implements WebMvcConfigurer
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/login**");
         addInterceptor.excludePathPatterns("/register**");
+        addInterceptor.excludePathPatterns("/thymeleaf/**");
+        addInterceptor.excludePathPatterns("/test/**");
 
         addInterceptor.addPathPatterns("/**");
     }

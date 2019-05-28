@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Table</title>
+    <style>
+        table, th, td {
+            border-style: solid;
+            border-color: #4395b5;
+            border-width: 1.5px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+    <script>
+        function edit(id)
+        {
+            document.getElementById(id+"_value_dis").style.display="none";
+            document.getElementById(id+"_value_input").style.display="inline";
+
+            var edit_button = document.getElementById(id+"_edit_button");
+            edit_button.setAttribute("onclick", "confirm(\""+id+"\");");
+            edit_button.setAttribute("value","confirm");
+
+            var cancel_button = document.createElement("input");
+            cancel_button.setAttribute("type","button");
+            cancel_button.setAttribute("value","cancel");
+            cancel_button.setAttribute("id",id+"_cancel_button");
+            cancel_button.setAttribute("onclick","cancel(\""+id+"\");");
+
+            var buttons = document.getElementById(id+"_buttons");
+            buttons.appendChild(cancel_button);
+        }
+
+        function cancel(id)
+        {
+            document.getElementById(id+"_buttons").removeChild(document.getElementById(id+"_cancel_button"));
+            document.getElementById(id+"_value_dis").style.display="inline";
+            document.getElementById(id+"_value_input").style.display="none";
+            var edit_button = document.getElementById(id+"_edit_button");
+            edit_button.setAttribute("onclick", "edit(\""+id+"\");");
+            edit_button.setAttribute("value","edit");
+            // alert("test");
+        }
+
+        function confirm(id)
+        {
+            document.getElementById(id+'_form').submit();
+        }
+
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>id</td>
+            <td>value</td>
+            <td>buttons</td>
+        </tr>
+        <tr th:each="pair:${pairs}">
+            <form method="get" th:id="${pair.id}+'_form'" action="/test/tableget">
+                <td>
+                    <span th:text="${pair.id}" th:id="${pair.id}+'_id_dis'"></span>
+                    <input style="display: none;" th:name="id" type="text" th:value="${pair.id}">
+                </td>
+
+                <td>
+                    <span th:text="${pair.value}" th:id="${pair.id}+'_value_dis'"></span>
+                    <input style="display: none;" th:id="${pair.id}+'_value_input'" th:name="${pair.id}+'_value_input'"
+                           type="text" th:value="${pair.value}">
+                </td>
+                <td th:id="${pair.id}+'_buttons'">
+                    <input th:onclick="edit([[${pair.id}]]);" th:id="${pair.id}+'_edit_button'" type="button" value="edit">
+                </td>
+            </form>
+        </tr>
+    </table>
+</body>
+</html>

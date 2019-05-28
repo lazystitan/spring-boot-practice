@@ -11,7 +11,9 @@
 
     </p>
     <p>
-        <a href="/editcourse">返回</a>
+        <a th:if="${editcourse}" href="/admin/editcourse">返回</a>
+        <a th:if="${editopen}" href="/admin/editopen">返回</a>
+        <a th:if="${editdepartment}" href="/admin/editdepartment">返回</a>
     </p>
 </body>
 </html>

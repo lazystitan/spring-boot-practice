@@ -11,4 +11,6 @@ public interface DepartmentDao
     Department getDepartmentById(String id);
     void insertDepartment(String id,String name);
     List<Department> getDepartments();
+    void updateDepartment(String id,String name);
+    void deleteDepartment(String id);
 }

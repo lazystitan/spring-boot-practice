@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>partHello</title>
+</head>
+<body>
+    <span>hello</span>
+    <div th:fragment="test">test</div>
+
+    <div th:replace="~{thymeleaf/commen/part2::test3}"></div>
+    <div th:replace="~{thymeleaf/part1::test2}"></div>
+    <div th:replace="~{::test}"></div>
+</body>
+</html>

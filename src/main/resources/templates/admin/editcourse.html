@@ -16,130 +16,131 @@
         }
     </style>
     <script>
-        function edit() {
-            document.getElementById("name_input").style.display="block";
-            document.getElementById("credit_input").style.display="block";
-            document.getElementById("max_input").style.display="block";
-            document.getElementById("department_input").style.display="block";
+        function edit(id)
+        {
+            document.getElementById(id+"_name_input").style.display="inline";
+            document.getElementById(id+"_credit_input").style.display="inline";
+            document.getElementById(id+"_max_input").style.display="inline";
+            document.getElementById(id+"_department_input").style.display="inline";
+            document.getElementById(id+"_cancel_button").style.display="inline";
+            document.getElementById(id+"_confirm_button").style.display="inline";
 
-            document.getElementById("name_dis").style.display="none";
-            document.getElementById("credit_dis").style.display="none";
-            document.getElementById("max_dis").style.display="none";
-            document.getElementById("department_dis").style.display="none";
-
-            var edit = document.getElementById("edit_button");
-            edit.setAttribute("value","确认");
-            edit.setAttribute("onclick","confirm()");
-
-            var cancel = document.createElement("input");
-            cancel.setAttribute("type","button");
-            cancel.setAttribute("id","cancel_button");
-            cancel.setAttribute("value","取消");
-            cancel.setAttribute("onclick","cancel()");
-            // cancel.setAttribute("onclick","alert('test')");
-            document.getElementById("buttons").appendChild(cancel);
-            // alert("test");
+            document.getElementById(id+"_name_dis").style.display="none";
+            document.getElementById(id+"_credit_dis").style.display="none";
+            document.getElementById(id+"_max_dis").style.display="none";
+            document.getElementById(id+"_department_dis").style.display="none";
+            document.getElementById(id+"_edit_button").style.display="none";
         }
 
-        function cancel() {
-            // alert("test");
-            var buttons = document.getElementById("buttons");
-            buttons.removeChild(document.getElementById("cancel_button"));
+        function cancel(id)
+        {
+            document.getElementById(id+"_name_input").style.display="none";
+            document.getElementById(id+"_credit_input").style.display="none";
+            document.getElementById(id+"_max_input").style.display="none";
+            document.getElementById(id+"_department_input").style.display="none";
+            document.getElementById(id+"_cancel_button").style.display="none";
+            document.getElementById(id+"_confirm_button").style.display="none";
 
-            var edit = document.getElementById("edit_button");
-            edit.setAttribute("value","编辑");
-            edit.setAttribute("onclick","edit()");
-
-            document.getElementById("name_dis").style.display="block";
-            document.getElementById("credit_dis").style.display="block";
-            document.getElementById("max_dis").style.display="block";
-            document.getElementById("department_dis").style.display="block";
-
-            document.getElementById("name_input").style.display="none";
-            document.getElementById("credit_input").style.display="none";
-            document.getElementById("max_input").style.display="none";
-            document.getElementById("department_input").style.display="none";
+            document.getElementById(id+"_name_dis").style.display="inline";
+            document.getElementById(id+"_credit_dis").style.display="inline";
+            document.getElementById(id+"_max_dis").style.display="inline";
+            document.getElementById(id+"_department_dis").style.display="inline";
+            document.getElementById(id+"_edit_button").style.display="inline";
         }
-        
-        function confirm() {
-            var form = document.getElementById("edit_form");
+
+        function confirm(id)
+        {
+            var form = document.getElementById(id+"_form");
             form.setAttribute("action","/updatecourse");
             form.submit();
         }
-        
-        function del() {
-            var form = document.getElementById("edit_form");
+
+        function del(id)
+        {
+            var form = document.getElementById(id+"_form");
             form.setAttribute("action","/delcourse");
             form.submit();
         }
+
     </script>
 </head>
 <body>
-    <form action="/editcourse" method="get" id="form">
-        <label>课程号：<input type="text" name="course_id"></label>
-        <input type="submit" value="搜索">
+    <div th:replace="parts/header::header_part"></div>
+    <div th:replace="parts/nav::navgation_part"></div>
+
+    <form action="/addcourse" method="get" id="addcourse">
+        <label>课程号
+            <input type="text" name="id_add">
+        </label>
+        <label>课程名
+            <input type="text" name="name_add">
+        </label>
+        <label>学分
+            <input type="text" name="credit_add">
+        </label>
+        <br>
+        <label>容量
+            <input type="text" name="max_add">
+        </label>
+        <label>学院
+            <select name="department_add">
+                <option th:each="department:${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+            </select>
+        </label>
+        <input type="submit" value="添加">
     </form>
-    <p th:if="${notFound}">没有该课程</p>
-    <form method="get" id="edit_form">
-        <table th:if="${not notFound}" id="table">
-            <tr>
-                <td>课程号</td>
-                <td>课程名</td>
-                <td>学分</td>
-                <td>容量</td>
-                <td>学院</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td id="id">
-                    <span id="id_dis" th:text="${id}"></span>
-                    <input type="text" name="id" th:value="${id}" style="display: none">
+
+    <table>
+        <tr>
+            <td>课程号</td>
+            <td>课程名</td>
+            <td>学分</td>
+            <td>容量</td>
+            <td>学院</td>
+            <td></td>
+        </tr>
+        <tr th:each="course:${courses}">
+            <form action="/updatecourse" method="get" th:id="${course.id}+'_form'">
+                <td>
+                    <span th:text="${course.id}"></span>
+                    <input type="text" th:value="${course.id}" name="id" style="display: none;">
                 </td>
-                <td id="name">
-                    <span id="name_dis" th:text="${name}"></span>
-                    <input type="text" id="name_input" name="name_input" style="display: none" th:value="${name}">
+                <td>
+                    <span th:text="${course.name}" th:id="${course.id}+'_name_dis'"></span>
+                    <input style="display: none;" th:id="${course.id}+'_name_input'" th:name="${course.id}+'_name_input'"
+                           th:value="${course.name}" type="text">
                 </td>
-                <td id="credit">
-                    <span id="credit_dis" th:text="${credit}"></span>
-                    <input type="text" id="credit_input" name="credit_input" style="display: none" th:value="${credit}">
+                <td>
+                    <span th:text="${course.credit}" th:id="${course.id}+'_credit_dis'"></span>
+                    <input style="display: none;" th:id="${course.id}+'_credit_input'" th:name="${course.id}+'_credit_input'"
+                           th:value="${course.credit}" type="text">
                 </td>
-                <td id="max">
-                    <span id="max_dis" th:text="${max}"></span>
-                    <input type="text" id="max_input" name="max_input" style="display: none" th:value="${max}">
+                <td>
+                    <span th:text="${course.max}" th:id="${course.id}+'_max_dis'"></span>
+                    <input style="display: none;" th:id="${course.id}+'_max_input'" th:name="${course.id}+'_max_input'"
+                           th:value="${course.max}" type="text">
                 </td>
-                <td id="department">
-                    <span id="department_dis" th:text="${department}"></span>
-                    <select name="department_input" id="department_input" style="display: none">
-                        <option th:each="department:${departments}" th:text="${department}"
-                                th:value="${department.id}"></option>
+                <td>
+                    <span th:text="${course.department}" th:id="${course.id}+'_department_dis'"></span>
+                    <select style="display: none"
+                            th:id="${course.id}+'_department_input'"
+                            th:name="${course.id}+'_department_input'">
+                        <option th:each="department:${departments}" th:value="${department.id}" th:text="${department.name}"></option>
                     </select>
                 </td>
-                <td id="buttons">
-                    <input onclick="edit()" type="button" value="编辑" id="edit_button">
-                    <input onclick="del()" type="button" value="删除">
+                <td th:id="${course.id}+'_buttons'">
+                    <input th:id="${course.id}+'_confirm_button'" th:onclick="confirm([[${course.id}]]);" type="button"
+                           value="确认" style="display: none;">
+                    <input th:id="${course.id}+'_edit_button'" th:onclick="edit([[${course.id}]]);" type="button"
+                           value="编辑">
+                    <input th:id="${course.id}+'_cancel_button'" th:onclick="cancel([[${course.id}]]);" type="button"
+                           value="取消" style="display: none;">
+                    <input th:id="${course.id}+'_del_button'" th:onclick="del([[${course.id}]]);" type="button"
+                           value="删除">
                 </td>
-            </tr>
-        </table>
-    </form>
-    <div>
-        <form action="/addcourse" method="post">
-            <label>课程号：<input type="text" id="id_add" name="id_add"></label>
-            <br>
-            <label>课程名：<input type="text" id="name_add" name="name_add"></label>
-            <br>
-            <label>学分：<input type="text" id="credit_add" name="credit_add"></label>
-            <br>
-            <label>容量：<input type="text" id="max_add" name="max_add"></label>
-            <br>
-            <label>学院：
-                <select name="department_add" id="department_add">
-                    <option th:each="department:${departments}" th:text="${department}"
-                            th:value="${department.id}"></option>
-                </select>
-            </label>
-            <br>
-            <input type="submit" value="添加">
-        </form>
-    </div>
+            </form>
+        </tr>
+    </table>
+
 </body>
 </html>

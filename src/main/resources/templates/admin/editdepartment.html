@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>EditDepartment</title>
+    <style>
+        table, th, td
+        {
+            border-style: solid;
+            border-color: #4395b5;
+            border-width: 1.5px;
+        }
+        table
+        {
+            border-collapse: collapse;
+        }
+    </style>
+
+    <script>
+        function edit(id)
+        {
+            document.getElementById(id+"_name_input").style.display="inline";
+            document.getElementById(id+"_cancel_button").style.display="inline";
+            document.getElementById(id+"_confirm_button").style.display="inline";
+
+            document.getElementById(id+"_name_dis").style.display="none";
+            document.getElementById(id+"_edit_button").style.display="none";
+        }
+
+        function cancel(id)
+        {
+            document.getElementById(id+"_name_input").style.display="none";
+            document.getElementById(id+"_cancel_button").style.display="none";
+            document.getElementById(id+"_confirm_button").style.display="none";
+
+            document.getElementById(id+"_name_dis").style.display="inline";
+            document.getElementById(id+"_edit_button").style.display="inline";
+        }
+
+        function confirm(id)
+        {
+            var form = document.getElementById(id+"_form");
+            form.setAttribute("action","/updatedepartment");
+            form.submit();
+        }
+
+        function del(id)
+        {
+            var form = document.getElementById(id+"_form");
+            form.setAttribute("action","/deldepartment");
+            form.submit();
+        }
+    </script>
+
+</head>
+<body>
+    <div th:replace="parts/header::header_part"></div>
+    <div th:replace="parts/nav::navgation_part"></div>
+
+    <form action="/adddepartment" method="get" id="adddepartment">
+        <label>学院号
+            <input type="text" name="id_add">
+        </label>
+        <label>学院名
+            <input type="text" name="name_add">
+        </label>
+        <input type="submit" value="添加">
+    </form>
+
+    <table>
+        <tr>
+            <td>学院号</td>
+            <td>学院名</td>
+            <td></td>
+        </tr>
+        <tr th:each="department:${departments}">
+            <form action="/updatedepartment" method="get" th:id="${department.id}+'_form'">
+                <td>
+                    <span th:text="${department.id}"></span>
+                    <input type="text" th:value="${department.id}" name="id" style="display: none;">
+                </td>
+                <td>
+                    <span th:text="${department.name}" th:id="${department.id}+'_name_dis'"></span>
+                    <input style="display: none;" th:id="${department.id}+'_name_input'" th:name="${department.id}+'_name_input'"
+                           th:value="${department.name}" type="text">
+                </td>
+                <td th:id="${department.id}+'_buttons'">
+                    <input th:id="${department.id}+'_confirm_button'" th:onclick="confirm([[${department.id}]]);" type="button"
+                           value="确认" style="display: none;">
+                    <input th:id="${department.id}+'_edit_button'" th:onclick="edit([[${department.id}]]);" type="button"
+                           value="编辑">
+                    <input th:id="${department.id}+'_cancel_button'" th:onclick="cancel([[${department.id}]]);" type="button"
+                           value="取消" style="display: none;">
+                    <input th:id="${department.id}+'_del_button'" th:onclick="del([[${department.id}]]);" type="button"
+                           value="删除">
+                </td>
+            </form>
+        </tr>
+    </table>
+</body>
+</html>

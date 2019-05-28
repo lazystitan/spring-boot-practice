@@ -16,4 +16,12 @@
         insert into department (id, name) values (#{id}, #{name})
     </insert>
 
+    <update id="updateDepartment">
+        update department set name=#{name} where id=#{id}
+    </update>
+
+    <delete id="deleteDeapartment">
+        delete from department where id=#{id}
+    </delete>
+
 </mapper>

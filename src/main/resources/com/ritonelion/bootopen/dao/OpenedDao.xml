@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ritonelion.bootopen.dao.OpenedDao">
+    <select id="getOpeneds" resultType="com.ritonelion.bootopen.model.Opened">
+        select id, term, courseId, teacherId, time from opened
+    </select>
+    <update id="updateOpened">
+        update opened
+        set term=#{term}, courseId=#{courseId}, teacherId=#{teacherId}, time=#{time}
+        where id = #{id}
+    </update>
+    <insert id="insertOpened">
+        insert into opened
+        (term, courseId, teacherId, time) values
+        (#{term}, #{courseId}, #{teacherId}, #{time})
+    </insert>
+    <select id="getOpenedById" resultType="com.ritonelion.bootopen.model.Opened">
+        select id, term, courseId, teacherId, time from opened where id = #{id}
+    </select>
+    <delete id="deleteOpened">
+        delete from opened where id=#{id}
+    </delete>
+
+</mapper>

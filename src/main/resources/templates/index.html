@@ -6,30 +6,14 @@
 </head>
 <body>
 
-    <p>当前学期:<span th:text="${term}"></span></p>
+    <div th:replace="parts/header::header_part"></div>
+    <div th:replace="parts/nav::navgation_part"></div>
 
-    <p>
-        <span th:if="${student}">学生</span>
-        <span th:if="${teacher}">教师</span>
-        <span th:text="${name}"></span>
-    </p>
-
-    <div th:if="${admin}">
-        <a href="/editcourse">编辑课程</a>
+    <form th:if="${admin}" action="/setterm" method="get">
+        <label>设置学期 <input type="text" name="term"> </label>
+        <input type="submit" value="确定">
         <br>
-        <a>编辑用户</a>
-        <br>
-        <form action="/setterm" method="get">
-            <label>设置学期 <input type="text" name="term"> </label>
-            <input type="submit" value="确定">
-            <br>
-            <span>格式：20xx-20xx{春|夏|秋|冬}季</span>
-        </form>
-    </div>
-
-    <a href="/logout">注销</a>
-
-
-
+        <span>格式：20xx-20xx{春|夏|秋|冬}季</span>
+    </form>
 </body>
 </html>
