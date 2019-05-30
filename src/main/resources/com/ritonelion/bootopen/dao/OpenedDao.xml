@@ -22,4 +22,5 @@
         delete from opened where id=#{id}
     </delete>
 
+
 </mapper>

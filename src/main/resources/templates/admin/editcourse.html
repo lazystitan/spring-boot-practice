@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Course</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style>
+        #header{
+            background-color: #a96db5;
+        }
+    </style>
     <style>
         table, th, td
         {
@@ -13,6 +21,18 @@
         table
         {
             border-collapse: collapse;
+        }
+        .main
+        {
+            width: 900px;
+            background-color: white;
+            padding: 40px;
+            margin-top: 40px;
+            border-radius: 15px;
+        }
+        body
+        {
+            background-color: #2be2bd5e;
         }
     </style>
     <script>
@@ -66,81 +86,89 @@
 </head>
 <body>
     <div th:replace="parts/header::header_part"></div>
-    <div th:replace="parts/nav::navgation_part"></div>
 
-    <form action="/addcourse" method="get" id="addcourse">
-        <label>课程号
-            <input type="text" name="id_add">
-        </label>
-        <label>课程名
-            <input type="text" name="name_add">
-        </label>
-        <label>学分
-            <input type="text" name="credit_add">
-        </label>
-        <br>
-        <label>容量
-            <input type="text" name="max_add">
-        </label>
-        <label>学院
-            <select name="department_add">
-                <option th:each="department:${departments}" th:value="${department.id}" th:text="${department.name}"></option>
-            </select>
-        </label>
-        <input type="submit" value="添加">
-    </form>
+    <div class="container main">
+        <form action="/addcourse" method="get" id="addcourse">
+            <label>课程号:
+                <input type="text" name="id_add">
+            </label>
+            <label>课程名:
+                <input type="text" name="name_add">
+            </label>
+            <label>学分:
+                <input type="text" name="credit_add">
+            </label>
+            <br>
+            <label>容量:
+                <input type="text" name="max_add">
+            </label>
+            <label>学院:
+                <select name="department_add">
+                    <option th:each="department:${departments}" th:value="${department.id}"
+                            th:text="${department.name}"></option>
+                </select>
+            </label>
+            <input type="submit" value="添加">
+        </form>
 
-    <table>
-        <tr>
-            <td>课程号</td>
-            <td>课程名</td>
-            <td>学分</td>
-            <td>容量</td>
-            <td>学院</td>
-            <td></td>
-        </tr>
-        <tr th:each="course:${courses}">
-            <form action="/updatecourse" method="get" th:id="${course.id}+'_form'">
-                <td>
-                    <span th:text="${course.id}"></span>
-                    <input type="text" th:value="${course.id}" name="id" style="display: none;">
-                </td>
-                <td>
-                    <span th:text="${course.name}" th:id="${course.id}+'_name_dis'"></span>
-                    <input style="display: none;" th:id="${course.id}+'_name_input'" th:name="${course.id}+'_name_input'"
-                           th:value="${course.name}" type="text">
-                </td>
-                <td>
-                    <span th:text="${course.credit}" th:id="${course.id}+'_credit_dis'"></span>
-                    <input style="display: none;" th:id="${course.id}+'_credit_input'" th:name="${course.id}+'_credit_input'"
-                           th:value="${course.credit}" type="text">
-                </td>
-                <td>
-                    <span th:text="${course.max}" th:id="${course.id}+'_max_dis'"></span>
-                    <input style="display: none;" th:id="${course.id}+'_max_input'" th:name="${course.id}+'_max_input'"
-                           th:value="${course.max}" type="text">
-                </td>
-                <td>
-                    <span th:text="${course.department}" th:id="${course.id}+'_department_dis'"></span>
-                    <select style="display: none"
-                            th:id="${course.id}+'_department_input'"
-                            th:name="${course.id}+'_department_input'">
-                        <option th:each="department:${departments}" th:value="${department.id}" th:text="${department.name}"></option>
-                    </select>
-                </td>
-                <td th:id="${course.id}+'_buttons'">
-                    <input th:id="${course.id}+'_confirm_button'" th:onclick="confirm([[${course.id}]]);" type="button"
-                           value="确认" style="display: none;">
-                    <input th:id="${course.id}+'_edit_button'" th:onclick="edit([[${course.id}]]);" type="button"
-                           value="编辑">
-                    <input th:id="${course.id}+'_cancel_button'" th:onclick="cancel([[${course.id}]]);" type="button"
-                           value="取消" style="display: none;">
-                    <input th:id="${course.id}+'_del_button'" th:onclick="del([[${course.id}]]);" type="button"
-                           value="删除">
-                </td>
-            </form>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <td>课程号</td>
+                <td>课程名</td>
+                <td>学分</td>
+                <td>容量</td>
+                <td>学院</td>
+                <td></td>
+            </tr>
+            <tr th:each="course:${courses}">
+                <form action="/updatecourse" method="get" th:id="${course.id}+'_form'">
+                    <td>
+                        <span th:text="${course.id}"></span>
+                        <input type="text" th:value="${course.id}" name="id" style="display: none;">
+                    </td>
+                    <td>
+                        <span th:text="${course.name}" th:id="${course.id}+'_name_dis'"></span>
+                        <input style="display: none;" th:id="${course.id}+'_name_input'"
+                               th:name="${course.id}+'_name_input'"
+                               th:value="${course.name}" type="text">
+                    </td>
+                    <td>
+                        <span th:text="${course.credit}" th:id="${course.id}+'_credit_dis'"></span>
+                        <input style="display: none;" th:id="${course.id}+'_credit_input'"
+                               th:name="${course.id}+'_credit_input'"
+                               th:value="${course.credit}" type="text">
+                    </td>
+                    <td>
+                        <span th:text="${course.max}" th:id="${course.id}+'_max_dis'"></span>
+                        <input style="display: none;" th:id="${course.id}+'_max_input'"
+                               th:name="${course.id}+'_max_input'"
+                               th:value="${course.max}" type="text">
+                    </td>
+                    <td>
+                        <span th:text="${course.department}" th:id="${course.id}+'_department_dis'"></span>
+                        <select style="display: none"
+                                th:id="${course.id}+'_department_input'"
+                                th:name="${course.id}+'_department_input'">
+                            <option th:each="department:${departments}" th:value="${department.id}"
+                                    th:text="${department.name}"></option>
+                        </select>
+                    </td>
+                    <td th:id="${course.id}+'_buttons'">
+                        <input th:id="${course.id}+'_confirm_button'" th:onclick="confirm([[${course.id}]]);"
+                               type="button"
+                               value="确认" style="display: none;">
+                        <input th:id="${course.id}+'_edit_button'" th:onclick="edit([[${course.id}]]);" type="button"
+                               value="编辑">
+                        <input th:id="${course.id}+'_cancel_button'" th:onclick="cancel([[${course.id}]]);"
+                               type="button"
+                               value="取消" style="display: none;">
+                        <input th:id="${course.id}+'_del_button'" th:onclick="del([[${course.id}]]);" type="button"
+                               value="删除">
+                    </td>
+                </form>
+            </tr>
+        </table>
+    </div>
 
 </body>
 </html>

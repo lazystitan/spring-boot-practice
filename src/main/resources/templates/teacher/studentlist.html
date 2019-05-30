@@ -1,14 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>StudentList</title>
-</head>
-<body>
-    <table>
-        <td>
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <style>
+        #header{
+            background-color: #a96db5;
+        }
+        body
+        {
+            background-color: #2be2bd5e;
+        }
+        .main
+        {
+            width: 900px;
+            background-color: white;
+            padding: 40px;
+            margin-top: 40px;
+            border-radius: 15px;
+        }
+        table, th, td
+        {
+            border-style: solid;
+            border-color: #4395b5;
+            border-width: 1.5px;
+        }
+        table
+        {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function selectTable(id) {
+            var tables = document.getElementsByName("table");
+            for (var i=0; i < tables.length; i++)
+                tables[i].style.display="none";
+            document.getElementById(id).style.display="block";
+        }
+        
+        function onload() {
+            var ops = document.getElementsByName("option");
+            alert(ops.length);
+            var id = ops[0].getAttribute("value");
+            alert(id);
+            selectTable(id);
+        }
 
-        </td>
-    </table>
+        function change_grade(id) {
+            var inputs = document.getElementById(id).getElementsByClassName("input");
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].style.display="inline"
+            }
+            var diss = document.getElementById(id).getElementsByClassName("dis");
+            for (i = 0; i < inputs.length; i++) {
+                diss[i].style.display="none"
+            }
+            document.getElementById(id+"_cancel").style.display="inline";
+            document.getElementById(id+"_submit").style.display="inline";
+        }
+
+        function cancel(id) {
+            var inputs = document.getElementById(id).getElementsByClassName("input");
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].style.display="none"
+            }
+
+            var diss = document.getElementById(id).getElementsByClassName("dis");
+            for (i = 0; i < inputs.length; i++) {
+                diss[i].style.display="inline"
+            }
+            document.getElementById(id+"_cancel").style.display="none";
+            document.getElementById(id+"_submit").style.display="none";
+        }
+
+        function submit_grade(id) {
+            document.getElementById(id+"_form").submit();
+        }
+
+    </script>
+</head>
+
+<body>
+    <div th:replace="parts/header::header_part"></div>
+
+    <div class="container main">
+        <form action="/teacher/studentlist" method="get">
+            <label>课程</label>
+            <select>
+                <option th:each="opened:${openeds}" th:text="${opened}" th:value="${opened.id}" th:onclick="selectTable([[${opened.id}]])"></option>
+            </select>
+        </form>
+        <div  th:each="table:${tables}" th:id="${table.openedId}"  style="display: none">
+            <form action="/changegrade" method="get" th:id="${table.openedId}+'_form'">
+                <button type="button" th:onclick="change_grade([[${table.openedId}]])">修改成绩</button>
+                <button style="display: none" th:id="${table.openedId}+'_submit'"
+                        th:onclick="submit_grade([[${table.openedId}]])"
+                        type="button">提交成绩</button>
+                <button style="display: none;" th:id="${table.openedId}+'_cancel'"
+                        th:onclick="cancel([[${table.openedId}]])"
+                        type="button">取消</button>
+                <input th:value="${table.openedId}" type="number" style="display: none" name="openedId">
+                <br>
+                <table>
+                    <tr>
+                        <td>学号</td>
+                        <td>姓名</td>
+                        <td>性别</td>
+                        <td>平时成绩</td>
+                        <td>考试成绩</td>
+                        <td>总评成绩</td>
+                    </tr>
+                    <tr th:each="selectedinfo:${table.list}">
+                        <td>
+                            <span th:text="${selectedinfo.studentId}"></span>
+                        </td>
+                        <td><span th:text="${selectedinfo.studentName}"></span></td>
+                        <td><span th:text="${selectedinfo.sex}"></span></td>
+                        <td>
+                            <span class="dis" style="display: inline;" th:name="${table.openedId}+'_pscj_dis'" th:text="${selectedinfo.pscj}"></span>
+                            <input style="display: none;" class="input"
+                                   th:name="${selectedinfo.studentId+'_pscj_input'}"
+                                   type="number">
+                        </td>
+                        <td>
+                            <span style="display: inline;" th:name="${table.openedId}+'_pscj_dis'"
+                                  class="dis" th:text="${selectedinfo.kscj}"></span>
+                            <input style="display: none;" class="input"
+                                   th:name="${selectedinfo.studentId+'_kscj_input'}"
+                                   type="number">
+                        </td>
+                        <td><span th:text="${selectedinfo.zpcj}"></span></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

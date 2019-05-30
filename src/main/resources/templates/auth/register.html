@@ -3,72 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
     <style>
-        .form
+        .main
         {
-            margin:100px auto;
-            width: 300px;
-            text-align: match-parent;
-            height: 280px;
-            background: #cbebf5;
-            padding: 50px;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px #b3b3b3;
+            margin-top: 70px;
+            width: 400px;
+            background-color: #f6ffff;
+            border-radius: 15px;
+            border-style: solid;
+            border-width: 1px;
         }
-        .button
+        .body
         {
-            margin:0 40%;
-        }
-        #input
-        {
-            margin: 10px 50px;
-            line-height: 30px;
+            background-color: #5acaf5;
         }
     </style>
 </head>
-<body>
-    <form action="/registerpost" method="post" class="form">
+<body class="body">
+    <div class="container main">
+        <form action="/registerpost" method="post" class="form-horizontal">
 
-        <div id="input">
-            <label><input type="radio" name="role" value="student" checked>学生注册</label>
-            <label><input type="radio" name="role" value="teacher">教师注册</label>
+            <div class="form-group row">
+                <h1 class="text-center">注册</h1>
+            </div>
 
-            <br>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">身份:</label>
+                <div class="col-sm-3"><input type="radio" name="role" value="student" checked>学生</div>
+                <div class="col-sm-3"><input type="radio" name="role" value="teacher">教师</div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">学号:</label>
+                <div class="col-sm-9"><input type="text" name="id" class="form-control"></div>
+            </div>
 
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">姓名:</label>
+                <div class="col-sm-9"><input type="text" name="name" class="form-control"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">性别:</label>
+                <div class="col-sm-3"><input type="radio" name="sex" value="男" checked>男</div>
+                <div class="col-sm-3"><input type="radio" name="sex" value="女">女</div>
+            </div>
 
-            <label>学号:<input type="text" name="id"></label>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">生日:</label>
+                <div class="col-sm-9"><input type="date" name="birthday" class="form-control"></div>
+            </div>
 
-            <br>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">密码:</label>
+                <div class="col-sm-9"><input type="password" name="password" class="form-control"></div>
+            </div>
 
-            <label>姓名:<input type="text" name="name"></label>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">学院:</label>
+                <div class="col-sm-6">
+                    <select name="department">
+                        <option th:each="department:${departments}" th:text="${department}"
+                                th:value="${department.id}"></option>
+                    </select>
+                </div>
+            </div>
 
-            <br>
-
-            性别:
-            <label><input type="radio" name="sex" value="男" checked>男</label>
-            <label><input type="radio" name="sex" value="女">女</label>
-
-            <br>
-
-            <label>生日:<input type="date" name="birthday"></label>
-
-            <br>
-
-            <label>密码:<input type="password" name="password"></label>
-
-            <br>
-
-            <label>学院:
-                <select name="department">
-                    <option th:each="department:${departments}" th:text="${department}"
-                            th:value="${department.id}"></option>
-                </select>
-            </label>
-
-            <br>
-        </div>
-
-        <input type="submit" value="注册" class="button">
-    </form>
+            <div class="form-group row">
+                <div class="col-sm-offset-2"><input type="submit" value="注册" class="btn btn-primary"></div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

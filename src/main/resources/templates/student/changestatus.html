@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Status</title>
+</head>
+<body>
+    <p>
+        <span th:if="${success}">成功</span>
+        <span th:if="${not success}">失败</span>
+
+    </p>
+    <p>
+        <a th:if="${addselect}" href="/student/selectcourse">返回</a>
+        <a th:if="${delselect}" href="/student/deleteselected">返回</a>
+    </p>
+</body>
+</html>

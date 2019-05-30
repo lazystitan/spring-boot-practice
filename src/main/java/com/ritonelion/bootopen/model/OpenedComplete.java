@@ -83,6 +83,6 @@ public class OpenedComplete
     @Override
     public String toString()
     {
-        return id+"-"+term+"-"+courseId+"-"+courseName+"-"+teacherId+"-"+courseName+"-"+time;
+        return term+"-"+courseName;
     }
 }
