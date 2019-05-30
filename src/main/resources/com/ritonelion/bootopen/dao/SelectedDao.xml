@@ -27,8 +27,12 @@
 
     <update id="updateSelected">
         update selected
-        set pscj = #{pscj}, kscj = #{kscj}, zpcj = #{zpcj}
+        set pscj = #{pscj}, kscj = #{kscj}
         where openedId = #{openedId} and studentId = #{studentId}
+    </update>
+
+    <update id="updateGrade" statementType="CALLABLE">
+        {call updateGrade(#{studentId}, #{openedId}, #{pscj}, #{kscj})}
     </update>
 
 </mapper>

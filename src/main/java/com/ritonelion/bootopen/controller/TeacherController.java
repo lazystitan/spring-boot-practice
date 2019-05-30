@@ -104,10 +104,9 @@ public class TeacherController
             for (Selected selected: selecteds)
             {
                 String studentId = selected.getStudentId();
-                selectedDao.updateSelected(studentId, openedId,
+                selectedDao.updateGrade(studentId, openedId,
                         Integer.parseInt(request.getParameter(studentId+"_pscj_input")),
-                        Integer.parseInt(request.getParameter(studentId+"_kscj_input")),
-                        null);
+                        Integer.parseInt(request.getParameter(studentId+"_kscj_input")));
             }
 
             modelAndView.addObject("success", true);

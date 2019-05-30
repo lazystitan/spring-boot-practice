@@ -14,4 +14,5 @@ public interface SelectedDao
     void deleteSelected(String studentId, int openedId);
     List<Selected> getSelectedByOpenedId(int openedId);
     void updateSelected(String studentId, int openedId, Integer pscj, Integer kscj, Integer zpcj);
+    void updateGrade(String studentId, int openedId, Integer pscj, Integer kscj);
 }
