@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,19 @@ public class StudentController
     {
         ModelAndView modelAndView = new ModelAndView("student/selectcourse");
 
+        String term = "";
+
+        try
+        {
+            FileReader fileReader = new FileReader("term.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            term = bufferedReader.readLine();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         setNameAndGetId(modelAndView, session);
         addRole(modelAndView);
 
@@ -40,17 +55,27 @@ public class StudentController
         {
             modelAndView.addObject("flag",true);
             List<OpenedComplete> openedCompletes = getOpenedCompletes();
-            modelAndView.addObject("openeds", openedCompletes);
+            List<OpenedComplete> openeds = new ArrayList<>();
+            for (OpenedComplete openedComplete:openedCompletes)
+            {
+                if (openedComplete.getTerm().equals(term))
+                    openeds.add(openedComplete);
+
+            }
+
+            modelAndView.addObject("openeds", openeds);
         }
         else if (courseid != null)
         {
             modelAndView.addObject("flag",true);
+
             List<OpenedComplete> openedCompletes = getOpenedCompletes();
             List<OpenedComplete> openeds = new ArrayList<>();
             for (OpenedComplete openedComplete:openedCompletes)
             {
-                if (openedComplete.getCourseId().equals(courseid))
+                if (openedComplete.getCourseId().equals(courseid) && openedComplete.getTerm().equals(term))
                     openeds.add(openedComplete);
+
             }
             modelAndView.addObject("openeds", openeds);
         }
@@ -84,6 +109,10 @@ public class StudentController
             temp.setTeacherId(item.getTeacherId());
             temp.setTerm(item.getTerm());
             temp.setTime(item.getTime());
+            temp.setNumber(item.getNumber());
+            Course course = courseDao.getCourseById(item.getCourseId());
+            temp.setMax(course.getMax());
+            temp.setCredit(course.getCredit());
 
             temp.setCourseName(courseDao.getCourseById(temp.getCourseId()).getName());
             temp.setTeacherName(teacherDao.getTeacherById(temp.getTeacherId()).getName());

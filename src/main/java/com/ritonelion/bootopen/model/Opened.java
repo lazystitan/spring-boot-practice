@@ -7,6 +7,7 @@ public class Opened
     private String courseId;
     private String teacherId;
     private String time;
+    private int number;
 
     public int getId()
     {
@@ -62,5 +63,15 @@ public class Opened
     public String toString()
     {
         return id+"-"+term+"-"+courseId+"-"+teacherId+"-"+time;
+    }
+
+    public int getNumber()
+    {
+        return number;
+    }
+
+    public void setNumber(int number)
+    {
+        this.number = number;
     }
 }

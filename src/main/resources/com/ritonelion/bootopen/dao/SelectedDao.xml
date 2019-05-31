@@ -34,5 +34,12 @@
     <update id="updateGrade" statementType="CALLABLE">
         {call updateGrade(#{studentId}, #{openedId}, #{pscj}, #{kscj})}
     </update>
+    
+    <resultMap type="java.util.HashMap" id="resultMap">
+        <result column="av_out" property="av_out" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+    </resultMap>
+    <select id="averageGrade" statementType="CALLABLE" parameterType="java.util.Map" resultMap="resultMap">
+        {call averageGrade(#{openedId,mode=IN,jdbcType=INTEGER}, #{avgGrade,mode=OUT,jdbcType=DOUBLE})}
+    </select>
 
 </mapper>

@@ -9,6 +9,9 @@ public class OpenedComplete
     private String teacherId;
     private String teacherName;
     private String time;
+    private int number;
+    private int max;
+    private int credit;
 
     public int getId()
     {
@@ -84,5 +87,35 @@ public class OpenedComplete
     public String toString()
     {
         return term+"-"+courseName;
+    }
+
+    public int getNumber()
+    {
+        return number;
+    }
+
+    public void setNumber(int number)
+    {
+        this.number = number;
+    }
+
+    public int getMax()
+    {
+        return max;
+    }
+
+    public void setMax(int max)
+    {
+        this.max = max;
+    }
+
+    public int getCredit()
+    {
+        return credit;
+    }
+
+    public void setCredit(int credit)
+    {
+        this.credit = credit;
     }
 }

@@ -36,7 +36,7 @@
     </style>
     <script>
         function selectTable(id) {
-            var tables = document.getElementsByName("table");
+            var tables = document.getElementsByClassName("table");
             for (var i=0; i < tables.length; i++)
                 tables[i].style.display="none";
             document.getElementById(id).style.display="block";
@@ -94,7 +94,7 @@
                 <option th:each="opened:${openeds}" th:text="${opened}" th:value="${opened.id}" th:onclick="selectTable([[${opened.id}]])"></option>
             </select>
         </form>
-        <div  th:each="table:${tables}" th:id="${table.openedId}"  style="display: none">
+        <div  th:each="table:${tables}" th:id="${table.openedId}"  style="display: none" class="table">
             <form action="/changegrade" method="get" th:id="${table.openedId}+'_form'">
                 <button type="button" th:onclick="change_grade([[${table.openedId}]])">修改成绩</button>
                 <button style="display: none" th:id="${table.openedId}+'_submit'"
@@ -104,6 +104,7 @@
                         th:onclick="cancel([[${table.openedId}]])"
                         type="button">取消</button>
                 <input th:value="${table.openedId}" type="number" style="display: none" name="openedId">
+                <br>
                 <br>
                 <table>
                     <tr>
@@ -124,18 +125,20 @@
                             <span class="dis" style="display: inline;" th:name="${table.openedId}+'_pscj_dis'" th:text="${selectedinfo.pscj}"></span>
                             <input style="display: none;" class="input"
                                    th:name="${selectedinfo.studentId+'_pscj_input'}"
-                                   type="number">
+                                   type="number" th:value="${selectedinfo.pscj}">
                         </td>
                         <td>
                             <span style="display: inline;" th:name="${table.openedId}+'_pscj_dis'"
                                   class="dis" th:text="${selectedinfo.kscj}"></span>
                             <input style="display: none;" class="input"
                                    th:name="${selectedinfo.studentId+'_kscj_input'}"
-                                   type="number">
+                                   type="number" th:value="${selectedinfo.pscj}">
                         </td>
                         <td><span th:text="${selectedinfo.zpcj}"></span></td>
                     </tr>
                 </table>
+                <label th:if="${table.avgGrade != -1}">平均成绩:<span th:text="${table.avgGrade}"></span></label>
+                <label th:if="${table.avgGrade == -1}">平均成绩:成绩未录入</label>
             </form>
         </div>
     </div>

@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TeacherController
@@ -81,6 +83,10 @@ public class TeacherController
             SelectedList selectedList = new SelectedList();
             selectedList.openedId = ids.get(i);
             selectedList.list = selectedInfos;
+            Map<String,Object> map = new HashMap<>();
+            map.put("openedId",ids.get(i));
+            selectedDao.averageGrade(map);
+            selectedList.avgGrade = map.get("avgGrade") != null ? (double) map.get("avgGrade"):0.0 ;
             tables.add(selectedList);
         }
 
@@ -124,6 +130,7 @@ public class TeacherController
     {
         private int openedId;
         private List<SelectedInfo> list;
+        private double avgGrade;
 
         public int getOpenedId()
         {
@@ -143,6 +150,16 @@ public class TeacherController
         public void setList(List<SelectedInfo> list)
         {
             this.list = list;
+        }
+
+        public double getAvgGrade()
+        {
+            return avgGrade;
+        }
+
+        public void setAvgGrade(double avgGrade)
+        {
+            this.avgGrade = avgGrade;
         }
     }
 

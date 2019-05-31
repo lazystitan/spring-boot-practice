@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ritonelion.bootopen.dao.OpenedDao">
     <select id="getOpeneds" resultType="com.ritonelion.bootopen.model.Opened">
-        select id, term, courseId, teacherId, time from opened
+        select id, term, courseId, teacherId, time, number from opened
     </select>
     <update id="updateOpened">
         update opened
